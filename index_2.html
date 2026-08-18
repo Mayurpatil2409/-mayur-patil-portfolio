@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Mayur Patil — Salesforce &amp; Java Full Stack Developer</title>
+<meta name="description" content="Portfolio of Mayur Patil, Salesforce and Java Full Stack Developer." />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;900&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  :root {
+    --font-display: 'Cinzel', serif;
+    --font-body: 'Inter', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+  }
+
+  body {
+    font-family: var(--font-body);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+    background: #0a0a0f;
+  }
+
+  a { text-decoration: none; }
+
+  /* ---------- Nav ---------- */
+  .nav-bar {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    display: flex;
+    justify-content: center;
+    gap: 0;
+    background: rgba(10,10,15,0.75);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    flex-wrap: wrap;
+  }
+
+  .nav-item {
+    font-family: var(--font-display);
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 1rem 1.5rem;
+    color: rgba(255,255,255,0.6);
+    cursor: pointer;
+    position: relative;
+    transition: color 0.2s ease;
+  }
+  .nav-item:hover { color: #ffc464; }
+  .nav-item.active { color: #ffc464; }
+  .nav-item.active::after {
+    content: '';
+    position: absolute;
+    left: 20%; right: 20%; bottom: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #d81e3f, #ffc464);
+  }
+
+  section {
+    padding: 6rem 3rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.in { opacity: 1; transform: translateY(0); }
+
+  .inner { position: relative; z-index: 2; max-width: 1180px; margin: 0 auto; }
+
+  /* ============ HERO — SAKURA THEME ============ */
+  #whoami {
+    background: linear-gradient(180deg, #fff9fb 0%, #ffeef4 60%, #ffe3ee 100%);
+    min-height: 92vh;
+    display: flex;
+    align-items: center;
+  }
+
+  .petal-layer { position: absolute; inset: 0; pointer-events: none; z-index: 1; }
+
+  .petal {
+    position: absolute;
+    top: -5%;
+    width: 14px;
+    height: 14px;
+    background: radial-gradient(circle at 30% 30%, #ffd6e6, #ff9dc0 70%);
+    border-radius: 0 60% 0 60%;
+    opacity: 0.85;
+    animation: fallSway linear infinite;
+  }
+
+  @keyframes fallSway {
+    0%   { transform: translate(0, 0) rotate(0deg); }
+    50%  { transform: translate(40px, 55vh) rotate(180deg); }
+    100% { transform: translate(-20px, 115vh) rotate(360deg); }
+  }
+
+  .hero {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: 3rem;
+    width: 100%;
+  }
+
+  .hero-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: #d16a9a;
+    letter-spacing: 0.15em;
+    margin-bottom: 1rem;
+  }
+
+  .hero-name {
+    font-family: var(--font-display);
+    font-size: 4rem;
+    font-weight: 900;
+    line-height: 1.05;
+    color: #4a2438;
+    text-shadow: 0 2px 24px rgba(255,157,192,0.5);
+  }
+
+  .hero-role {
+    font-family: var(--font-mono);
+    font-size: 1rem;
+    color: #a15c7e;
+    margin: 1.1rem 0 1.6rem 0;
+    border-left: 3px solid #ff9dc0;
+    padding-left: 0.9rem;
+  }
+
+  .hero-summary { color: #7a5468; max-width: 48ch; margin-bottom: 2rem; }
+
+  .btn-row { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+  .btn {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    padding: 0.85rem 1.5rem;
+    border-radius: 6px;
+    border: 1px solid rgba(0,0,0,0.1);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .btn-primary {
+    background: linear-gradient(120deg, #ff6fa5, #ff9dc0);
+    color: white;
+    border: none;
+    font-weight: 600;
+  }
+  .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 10px 26px rgba(255,111,165,0.4); }
+
+  .btn-ghost { color: #4a2438; background: rgba(255,255,255,0.6); }
+  .btn-ghost:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.08); }
+
+  .photo-frame {
+    position: relative;
+    justify-self: center;
+    width: 320px;
+    perspective: 900px;
+  }
+
+  .photo-tilt {
+    transition: transform 0.15s ease-out;
+    transform-style: preserve-3d;
+  }
+
+  .photo-ring {
+    position: absolute;
+    inset: -12px;
+    border-radius: 50%;
+    background: conic-gradient(from 0deg, #ffd6e6, #ff9dc0, #ffb6d9, #ffd6e6);
+    animation: spin 8s linear infinite;
+    filter: blur(1px);
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .photo-inner {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 5px solid #fff;
+    box-shadow: 0 24px 50px rgba(255,111,165,0.35);
+  }
+
+  .photo-inner img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    filter: saturate(0.95) brightness(1.06) contrast(1.02);
+  }
+
+  .photo-inner::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg, rgba(255,182,217,0.12), rgba(255,111,165,0.08));
+    mix-blend-mode: soft-light;
+  }
+
+  .status-badge {
+    position: absolute;
+    bottom: -16px; left: 50%;
+    transform: translateX(-50%);
+    background: white;
+    border-radius: 999px;
+    padding: 0.45rem 1.1rem;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: #d1477d;
+    display: flex; align-items: center; gap: 0.5rem;
+    white-space: nowrap;
+    box-shadow: 0 8px 22px rgba(255,111,165,0.3);
+  }
+
+  .status-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: #ff6fa5;
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(255,111,165,0.55); }
+    70% { box-shadow: 0 0 0 10px rgba(255,111,165,0); }
+    100% { box-shadow: 0 0 0 0 rgba(255,111,165,0); }
+  }
+
+  /* ============ SKILLS + PROJECTS — WATER THEME ============ */
+  .water-section {
+    background: linear-gradient(180deg, #032c4a 0%, #04456e 45%, #036b8a 100%);
+    color: #eaf6ff;
+  }
+
+  #projects.water-section {
+    background: linear-gradient(180deg, #021c30 0%, #023550 50%, #024f6b 100%);
+  }
+
+  .wave-divider {
+    position: absolute;
+    left: 0; right: 0;
+    height: 90px;
+    overflow: hidden;
+    line-height: 0;
+    z-index: 1;
+  }
+  .wave-top { top: -1px; }
+  .wave-bottom { bottom: -1px; transform: scaleY(-1); }
+
+  .wave-divider svg { width: 100%; height: 100%; }
+
+  .bubble {
+    position: absolute;
+    bottom: -10%;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.25);
+    animation: riseBubble linear infinite;
+  }
+
+  @keyframes riseBubble {
+    0% { transform: translateY(0) translateX(0); opacity: 0.7; }
+    100% { transform: translateY(-115vh) translateX(20px); opacity: 0; }
+  }
+
+  .section-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.15em;
+    margin-bottom: 0.75rem;
+    text-transform: uppercase;
+    color: #7fd8ff;
+  }
+
+  .section-title {
+    font-family: var(--font-display);
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin-bottom: 2.25rem;
+    letter-spacing: 0.02em;
+    color: #eaf6ff;
+  }
+
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.4rem;
+  }
+
+  .skill-group {
+    background: rgba(255,255,255,0.07);
+    backdrop-filter: blur(6px);
+    border: 1px solid rgba(255,255,255,0.18);
+    border-radius: 10px;
+    padding: 1.4rem;
+    transition: transform 0.25s ease, border-color 0.25s ease;
+  }
+  .skill-group:hover { transform: translateY(-4px) scale(1.015); border-color: #7fd8ff; }
+
+  .skill-key {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    font-weight: 700;
+    color: #a4e8ff;
+    margin-bottom: 1rem;
+  }
+
+  .chip-row { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+
+  .chip {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    padding: 0.35rem 0.7rem;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.22);
+    color: #eaf6ff;
+    transition: background 0.2s ease;
+  }
+  .chip:hover { background: rgba(127,216,255,0.25); }
+
+  .project-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.75rem;
+    perspective: 1200px;
+  }
+
+  .project-card {
+    background: rgba(255,255,255,0.06);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.18);
+    border-radius: 14px;
+    overflow: hidden;
+    transition: transform 0.15s ease-out, box-shadow 0.3s ease;
+    transform-style: preserve-3d;
+  }
+  .project-card:hover { box-shadow: 0 20px 45px rgba(0,0,0,0.35); }
+
+  .project-file-bar {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: #9fd4ea;
+    padding: 0.75rem 1.2rem;
+    border-bottom: 1px solid rgba(255,255,255,0.15);
+    background: rgba(255,255,255,0.05);
+  }
+
+  .project-body { padding: 1.4rem 1.4rem 1.6rem 1.4rem; }
+
+  .project-name {
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 0.6rem;
+    color: #eaf6ff;
+  }
+
+  .project-desc { color: #b8dcec; font-size: 0.9rem; margin-bottom: 1.1rem; }
+
+  .project-link { font-family: var(--font-mono); font-size: 0.78rem; color: #7fd8ff; border-bottom: 1px solid transparent; }
+  .project-link:hover { border-color: #7fd8ff; }
+
+  /* ============ RESUME — FIRE THEME ============ */
+  #resume {
+    background: linear-gradient(180deg, #1a0a0a 0%, #2b0e0e 60%, #1a0a0a 100%);
+    color: #f5eee7;
+  }
+
+  #resume .section-eyebrow { color: #ff8a3d; }
+  #resume .section-title { color: #ffd8a8; }
+
+  #emberCanvas {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    opacity: 0.6;
+  }
+
+  .resume-card {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,138,61,0.3);
+    border-radius: 12px;
+    padding: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    max-width: 560px;
+    transition: border-color 0.25s ease, transform 0.2s ease;
+  }
+  .resume-card:hover { border-color: #ff8a3d; transform: translateY(-3px); }
+
+  .resume-icon {
+    width: 54px; height: 54px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #8f0e26, #d81e3f);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-mono); color: white; font-size: 0.7rem; font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .resume-meta { flex: 1; }
+  .resume-title { font-weight: 600; margin-bottom: 0.2rem; }
+  .resume-sub { font-family: var(--font-mono); font-size: 0.78rem; color: #c9a89a; }
+
+  .btn-fire {
+    background: linear-gradient(120deg, #8f0e26, #d81e3f, #ff8a3d);
+    color: white;
+    border: none;
+    font-weight: 600;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    padding: 0.85rem 1.5rem;
+    border-radius: 6px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .btn-fire:hover { transform: translateY(-3px); box-shadow: 0 10px 26px rgba(216,30,63,0.45); }
+
+  /* ============ CONTACT — EARTH THEME ============ */
+  #contact {
+    background:
+      radial-gradient(circle at 20% 20%, rgba(120,90,50,0.35), transparent 45%),
+      radial-gradient(circle at 80% 70%, rgba(80,110,60,0.3), transparent 50%),
+      linear-gradient(180deg, #241a12 0%, #2e2116 55%, #241a12 100%);
+    color: #f0e6d8;
+  }
+
+  #contact .section-eyebrow { color: #b6d38a; }
+  #contact .section-title { color: #e8d5b0; }
+
+  .leaf {
+    position: absolute;
+    width: 10px; height: 16px;
+    background: linear-gradient(160deg, #8ea86a, #5c7a3f);
+    border-radius: 0 100% 0 100%;
+    opacity: 0.7;
+    animation: fallSway linear infinite;
+  }
+
+  .contact-block {
+    font-family: var(--font-mono);
+    font-size: 0.92rem;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(182,211,138,0.25);
+    border-radius: 12px;
+    padding: 1.6rem 1.85rem;
+    max-width: 560px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .contact-row { display: flex; justify-content: space-between; padding: 0.6rem 0; border-bottom: 1px solid rgba(255,255,255,0.08); }
+  .contact-row:last-child { border-bottom: none; }
+  .contact-key { color: #a99b82; }
+  .contact-val { color: #cde3a3; }
+  .contact-val:hover { text-decoration: underline; }
+
+  footer {
+    text-align: center;
+    padding: 2rem;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: #a99b82;
+    background: #1a130d;
+    border-top: 1px solid rgba(255,255,255,0.08);
+  }
+
+  @media (max-width: 860px) {
+    .hero { grid-template-columns: 1fr; }
+    .photo-frame { width: 220px; order: -1; margin-bottom: 1.5rem; }
+    section { padding: 4rem 1.5rem; }
+    .hero-name { font-size: 2.4rem; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition: none !important; }
+    .reveal { opacity: 1; transform: none; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="nav-bar" id="navBar">
+    <div class="nav-item active" data-target="whoami">Prologue</div>
+    <div class="nav-item" data-target="skills">Abilities</div>
+    <div class="nav-item" data-target="projects">Chronicles</div>
+    <div class="nav-item" data-target="resume">Scroll</div>
+    <div class="nav-item" data-target="contact">Contact</div>
+  </div>
+
+  <!-- ===== HERO — SAKURA ===== -->
+  <section id="whoami">
+    <div class="petal-layer" id="petalLayer"></div>
+    <div class="inner">
+      <div class="hero">
+        <div>
+          <div class="hero-eyebrow reveal">PORTFOLIO — CHAPTER I</div>
+          <div class="hero-name reveal">Mayur Patil</div>
+          <div class="hero-role reveal">Salesforce &amp; Java Full Stack Developer</div>
+          <p class="hero-summary reveal">
+            Final-year Computer Applications graduate (July 2026, CGPA 7.980, A+) building
+            Salesforce Apex/LWC applications and Java Spring Boot + React full stack projects.
+            Comfortable with REST API integration, backend debugging, and secure data handling.
+          </p>
+          <div class="btn-row reveal">
+            <a class="btn btn-primary" href="resume.pdf" download>Download Resume</a>
+            <a class="btn btn-ghost" href="https://github.com/Mayurpatil2409" target="_blank" rel="noopener">GitHub ↗</a>
+            <a class="btn btn-ghost" href="https://www.linkedin.com/in/mayur-vilas-patil/" target="_blank" rel="noopener">LinkedIn ↗</a>
+          </div>
+        </div>
+
+        <div class="photo-frame reveal">
+          <div class="photo-tilt" id="photoTilt">
+            <div class="photo-ring"></div>
+            <div class="photo-inner">
+              <img src="profile.jpg" alt="Mayur Patil" />
+            </div>
+          </div>
+          <div class="status-badge">
+            <span class="status-dot"></span>
+            Open to opportunities
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SKILLS — WATER ===== -->
+  <section id="skills" class="water-section">
+    <div class="wave-divider wave-top">
+      <svg viewBox="0 0 500 60" preserveAspectRatio="none"><path d="M0,30 C150,70 350,-10 500,30 L500,0 L0,0 Z" fill="#fff9fb"></path></svg>
+    </div>
+    <div class="bubble-layer" id="bubbleLayerSkills"></div>
+    <div class="inner">
+      <div class="section-eyebrow reveal">Chapter II</div>
+      <h2 class="section-title reveal">Abilities</h2>
+      <div class="skills-grid">
+        <div class="skill-group reveal">
+          <div class="skill-key">Salesforce</div>
+          <div class="chip-row">
+            <span class="chip">Apex</span>
+            <span class="chip">LWC</span>
+            <span class="chip">SOQL</span>
+            <span class="chip">SOSL</span>
+            <span class="chip">Named Credentials</span>
+            <span class="chip">JSON Parsing</span>
+          </div>
+        </div>
+        <div class="skill-group reveal">
+          <div class="skill-key">Full Stack</div>
+          <div class="chip-row">
+            <span class="chip">Java</span>
+            <span class="chip">Spring Boot</span>
+            <span class="chip">React</span>
+            <span class="chip">REST APIs</span>
+            <span class="chip">JavaScript</span>
+            <span class="chip">HTML/CSS</span>
+            <span class="chip">MySQL</span>
+            <span class="chip">Git</span>
+            <span class="chip">Postman</span>
+            <span class="chip">Python</span>
+          </div>
+        </div>
+        <div class="skill-group reveal">
+          <div class="skill-key">Practices</div>
+          <div class="chip-row">
+            <span class="chip">Agile/Scrum</span>
+            <span class="chip">Input Validation</span>
+            <span class="chip">Role-Based Access</span>
+            <span class="chip">CI/CD</span>
+          </div>
+        </div>
+        <div class="skill-group reveal">
+          <div class="skill-key">Soft Skills</div>
+          <div class="chip-row">
+            <span class="chip">Communication</span>
+            <span class="chip">Teamwork</span>
+            <span class="chip">Time Management</span>
+            <span class="chip">Problem Solving</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== PROJECTS — DEEP WATER ===== -->
+  <section id="projects" class="water-section">
+    <div class="bubble-layer" id="bubbleLayerProjects"></div>
+    <div class="inner">
+      <div class="section-eyebrow reveal">Chapter III</div>
+      <h2 class="section-title reveal">Chronicles</h2>
+      <div class="project-grid" id="projectGrid">
+
+        <div class="project-card reveal tilt-card">
+          <div class="project-file-bar">skypulse.app</div>
+          <div class="project-body">
+            <div class="project-name">SkyPulse — LWC Weather Dashboard</div>
+            <p class="project-desc">
+              Salesforce LWC weather dashboard with a custom Apex controller making secure
+              REST callouts via Named Credentials. Live weather data with city autocomplete,
+              JSON parsing, and zero hardcoded credentials.
+            </p>
+            <a class="project-link" href="https://github.com/Mayurpatil2409/SkyPulse-LWC-Weather" target="_blank" rel="noopener">View on GitHub ↗</a>
+          </div>
+        </div>
+
+        <div class="project-card reveal tilt-card">
+          <div class="project-file-bar">workforge.app</div>
+          <div class="project-body">
+            <div class="project-name">WorkForge — HR &amp; Payroll Platform</div>
+            <p class="project-desc">
+              REST-based CRUD system for employees, departments, and salaries using Spring Boot
+              and MySQL, with a React dashboard, role-based access via Spring Security, and
+              full input validation.
+            </p>
+            <span class="project-link" style="color: #7fa8bc; cursor: default;">GitHub link coming soon</span>
+          </div>
+        </div>
+
+        <div class="project-card reveal tilt-card">
+          <div class="project-file-bar">devfolio.app</div>
+          <div class="project-body">
+            <div class="project-name">DevFolio — Personal Developer Portfolio</div>
+            <p class="project-desc">
+              Fully responsive personal site built in React, deployed on GitHub Pages with
+              CI/CD auto-publish on every push, on-page SEO, and a persisted dark/light theme toggle.
+            </p>
+            <span class="project-link" style="color: #7fa8bc; cursor: default;">GitHub link coming soon</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <div class="wave-divider wave-bottom">
+      <svg viewBox="0 0 500 60" preserveAspectRatio="none"><path d="M0,30 C150,70 350,-10 500,30 L500,0 L0,0 Z" fill="#1a0a0a"></path></svg>
+    </div>
+  </section>
+
+  <!-- ===== RESUME — FIRE ===== -->
+  <section id="resume">
+    <canvas id="emberCanvas"></canvas>
+    <div class="inner">
+      <div class="section-eyebrow reveal">Chapter IV</div>
+      <h2 class="section-title reveal">The Scroll</h2>
+      <div class="resume-card reveal">
+        <div class="resume-icon">PDF</div>
+        <div class="resume-meta">
+          <div class="resume-title">Mayur_Patil_Resume.pdf</div>
+          <div class="resume-sub">Updated Aug 2026 · 1 page</div>
+        </div>
+        <a class="btn-fire" href="resume.pdf" download>Download</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CONTACT — EARTH ===== -->
+  <section id="contact">
+    <div class="petal-layer" id="leafLayer"></div>
+    <div class="inner">
+      <div class="section-eyebrow reveal">Chapter V</div>
+      <h2 class="section-title reveal">Contact</h2>
+      <div class="contact-block reveal">
+        <div class="contact-row">
+          <span class="contact-key">email</span>
+          <a class="contact-val" href="mailto:mayurpatil3780@gmail.com">mayurpatil3780@gmail.com</a>
+        </div>
+        <div class="contact-row">
+          <span class="contact-key">phone</span>
+          <a class="contact-val" href="tel:+919158488161">+91 91584 88161</a>
+        </div>
+        <div class="contact-row">
+          <span class="contact-key">location</span>
+          <span class="contact-val">Pune, India</span>
+        </div>
+        <div class="contact-row">
+          <span class="contact-key">github</span>
+          <a class="contact-val" href="https://github.com/Mayurpatil2409" target="_blank" rel="noopener">Mayurpatil2409</a>
+        </div>
+        <div class="contact-row">
+          <span class="contact-key">linkedin</span>
+          <a class="contact-val" href="https://www.linkedin.com/in/mayur-vilas-patil/" target="_blank" rel="noopener">mayur-vilas-patil</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    built by Mayur Patil · view source on <a href="https://github.com/Mayurpatil2409" target="_blank" rel="noopener" style="color: #cde3a3;">GitHub</a>
+  </footer>
+
+<script>
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // ---- Sakura petals (hero) ----
+  function spawnPetals(containerId, count, colorClass) {
+    const layer = document.getElementById(containerId);
+    if (!layer) return;
+    for (let i = 0; i < count; i++) {
+      const p = document.createElement('div');
+      p.className = colorClass;
+      p.style.left = Math.random() * 100 + '%';
+      p.style.animationDuration = (8 + Math.random() * 10) + 's';
+      p.style.animationDelay = (Math.random() * 10) + 's';
+      p.style.opacity = 0.5 + Math.random() * 0.4;
+      const size = 8 + Math.random() * 10;
+      p.style.width = size + 'px';
+      p.style.height = size + 'px';
+      layer.appendChild(p);
+    }
+  }
+  spawnPetals('petalLayer', 26, 'petal');
+  spawnPetals('leafLayer', 14, 'leaf');
+
+  // ---- Water bubbles ----
+  function spawnBubbles(containerId, count) {
+    const layer = document.getElementById(containerId);
+    if (!layer) return;
+    layer.style.position = 'absolute';
+    layer.style.inset = '0';
+    layer.style.pointerEvents = 'none';
+    layer.style.zIndex = '1';
+    for (let i = 0; i < count; i++) {
+      const b = document.createElement('div');
+      b.className = 'bubble';
+      const size = 6 + Math.random() * 16;
+      b.style.width = size + 'px';
+      b.style.height = size + 'px';
+      b.style.left = Math.random() * 100 + '%';
+      b.style.animationDuration = (6 + Math.random() * 8) + 's';
+      b.style.animationDelay = (Math.random() * 8) + 's';
+      layer.appendChild(b);
+    }
+  }
+  spawnBubbles('bubbleLayerSkills', 18);
+  spawnBubbles('bubbleLayerProjects', 18);
+
+  // ---- Fire embers (resume section only) ----
+  const canvas = document.getElementById('emberCanvas');
+  if (canvas) {
+    const ctx = canvas.getContext('2d');
+    let w, h, particles;
+
+    function resizeCanvas() {
+      const rect = canvas.parentElement.getBoundingClientRect();
+      w = canvas.width = rect.width;
+      h = canvas.height = rect.height;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    function makeParticle() {
+      return {
+        x: Math.random() * w,
+        y: h + Math.random() * 60,
+        r: Math.random() * 2 + 0.6,
+        speed: Math.random() * 0.6 + 0.25,
+        drift: (Math.random() - 0.5) * 0.4,
+        alpha: Math.random() * 0.5 + 0.2,
+        hue: Math.random() > 0.5 ? '216,30,63' : '255,138,61'
+      };
+    }
+    particles = Array.from({ length: 60 }, makeParticle);
+
+    function animateFire() {
+      ctx.clearRect(0, 0, w, h);
+      particles.forEach((p) => {
+        p.y -= p.speed;
+        p.x += p.drift;
+        if (p.y < -10) Object.assign(p, makeParticle(), { y: h + 10 });
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${p.hue}, ${p.alpha})`;
+        ctx.shadowBlur = 6;
+        ctx.shadowColor = `rgba(${p.hue}, 0.8)`;
+        ctx.fill();
+      });
+      if (!prefersReduced) requestAnimationFrame(animateFire);
+    }
+    if (!prefersReduced) animateFire();
+  }
+
+  // ---- 3D tilt on photo + project cards ----
+  function apply3DTilt(el, maxTilt) {
+    el.addEventListener('mousemove', (e) => {
+      const rect = el.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width - 0.5;
+      const y = (e.clientY - rect.top) / rect.height - 0.5;
+      el.style.transform = `rotateY(${x * maxTilt}deg) rotateX(${-y * maxTilt}deg)`;
+    });
+    el.addEventListener('mouseleave', () => {
+      el.style.transform = 'rotateY(0deg) rotateX(0deg)';
+    });
+  }
+
+  if (!prefersReduced) {
+    const photoTilt = document.getElementById('photoTilt');
+    if (photoTilt) apply3DTilt(photoTilt, 14);
+
+    document.querySelectorAll('.tilt-card').forEach((card) => apply3DTilt(card, 6));
+  }
+
+  // ---- Scroll reveal ----
+  const revealEls = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  revealEls.forEach((el) => observer.observe(el));
+
+  // ---- Nav navigation + active state ----
+  const navItems = document.querySelectorAll('.nav-item');
+  const sections = document.querySelectorAll('section[id]');
+
+  navItems.forEach((item) => {
+    item.addEventListener('click', () => {
+      const target = document.getElementById(item.dataset.target);
+      if (target) target.scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+
+  const sectionObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        navItems.forEach((n) => n.classList.remove('active'));
+        const activeItem = document.querySelector(`.nav-item[data-target="${entry.target.id}"]`);
+        if (activeItem) activeItem.classList.add('active');
+      }
+    });
+  }, { threshold: 0.4, rootMargin: '-80px 0px -50% 0px' });
+  sections.forEach((s) => sectionObserver.observe(s));
+</script>
+
+</body>
+</html>
